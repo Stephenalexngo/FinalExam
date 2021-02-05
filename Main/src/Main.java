@@ -6,8 +6,10 @@ import java.io.FileWriter;
 import java.util.*;
 
 public class Main {
+    public static HashMap<String, HashMap<String, TerminalPair> > LLTable = new HashMap<String, HashMap<String, TerminalPair> >();
+
     public static boolean DoLLOneParsing(String line){
-        
+
 
         return true;
     }
@@ -19,6 +21,9 @@ public class Main {
         String line;
 
         FileWriter fw = new FileWriter("Main/src/output.txt");
+
+        GenerateLLTable gentable = new GenerateLLTable();
+        LLTable = gentable.generateTable();
 
         while( (line = br.readLine()) != null){
             if(!line.equals("")){
@@ -35,6 +40,22 @@ public class Main {
                 fw.append("\n");
             }
         }
+
+        // LLTable.entrySet().forEach(nonTerminal->{
+        //     System.out.println("NonTerminal = " + nonTerminal.getKey().toString());
+            
+        //     nonTerminal.getValue().entrySet().forEach(terminal->{
+        //         System.out.print("Ternimal = " + terminal.getKey().toString() + " === ");
+
+        //         for(int x=0; x<terminal.getValue().getValue().size(); x++){
+        //             System.out.print(terminal.getValue().getValue().get(x) + "  ");
+        //         }
+
+        //         System.out.println("");
+        //     });
+
+        //     System.out.println("");
+        // });
 
         System.out.println("Parsing Complete!");
 
