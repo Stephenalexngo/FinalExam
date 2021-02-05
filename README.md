@@ -1,7 +1,7 @@
 # Stephen Alex Ngo
 
 ## Main Class Destination
-- Final-Exam > src > Main.java
+- Main > src > Main.java
 
 ## How my program works
 - Using IDE = Visual Studio Code
