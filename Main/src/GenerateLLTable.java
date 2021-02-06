@@ -2,16 +2,15 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class GenerateLLTable {
-    String[] nonTerminals = {"expression","plus_expression","paren","multi_expression","final_value"};
-    String[] terminals = {"+","*","(",")","id","$"};
+    String[] nonTerminals = {"boy","car","door","apple","feather","good"};
+    String[] terminals = {"(",")","alphanum","symbol","U","E","$"};
 
-    String[] expression_table = {"empty", "empty", "expression plus_expression", "empty", "expression plus_expression", "empty"};
-    String[] plus_expression_table = {"+ expression plus_expression", "empty", "empty", "epsilon", "empty", "epsilon    "};
-    String[] paren_table = {"empty", "empty", "paren multi_expression", "empty", "paren multi_expression", "empty"};
-    String[] multi_expression_table = {"epsilon", "* paren multi_expression", "empty", "epsilon", "empty", "epsilon"};
-    String[] final_value_table = {"empty", "empty", "( expression )", "empty", "id", "empty"};
-    
-    // ASCII (a-z = 97-122) (0-9 = 48-57)
+    String[] boy_table = {"( boy ) door", "empty", "car", "empty", "empty", "empty", "empty"};
+    String[] car_table = {"empty", "empty", "alphanum door", "empty", "empty", "empty", "empty"};
+    String[] door_table = {"empty", "epsilon", "empty", "symbol good", "apple", "empty", "epsilon"};
+    String[] apple_table = {"empty", "empty", "empty", "empty", "U feather", "empty", "empty"};
+    String[] feather_table = {"boy", "empty", "boy", "empty", "empty", "E", "empty"};
+    String[] good_table = {"boy", "epsilon", "boy", "empty", "apple", "empty", "epsilon"};
 
     HashMap<String, HashMap<String, TerminalPair> > LLParsingTable = new HashMap<String, HashMap<String, TerminalPair> >();
     
@@ -22,19 +21,22 @@ public class GenerateLLTable {
                 String[] values = {};
                 
                 if(x==0){
-                    values = expression_table[y].split(" ");
+                    values = boy_table[y].split(" ");
                 }
                 else if(x==1){
-                    values = plus_expression_table[y].split(" ");
+                    values = car_table[y].split(" ");
                 }
                 else if(x==2){
-                    values = paren_table[y].split(" ");
+                    values = door_table[y].split(" ");
                 }
                 else if(x==3){
-                    values = multi_expression_table[y].split(" ");
+                    values = apple_table[y].split(" ");
                 }
                 else if(x==4){
-                    values = final_value_table[y].split(" ");
+                    values = feather_table[y].split(" ");
+                }
+                else if(x==5){
+                    values = good_table[y].split(" ");
                 }
 
                 ArrayList<String> arr = new ArrayList<String>();
