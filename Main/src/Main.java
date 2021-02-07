@@ -9,103 +9,201 @@ public class Main {
     static HashMap<String, HashMap<String, TerminalPair> > LLTable = new HashMap<String, HashMap<String, TerminalPair> >();
     static HashMap<String, String> terminalMap = new HashMap<String, String>();
 
-    static Stack<Character> input_stack = new Stack<Character>();
     static Stack<String> grammar_stack = new Stack<String>();
 
     static boolean isAlphaNum = false;
 
-    // States
-    private static final int q0 = 0;
-    private static final int q1 = 1;
-    private static final int q2 = 2;
-    private static final int q3 = 3;
-    private static final int q4 = 4;
-    private static final int q5 = 5;
-    private static final int q6 = 6;
-    private static final int q7 = 7;
-    private static final int q8 = 8;
-    private static final int q9 = 9;
-    private static final int garb = -1;
-
-    public static void startup(String line){
+    public static String startup(String line){
         // start node
-        grammar_stack.push("expression");
+        grammar_stack.push("$");
+        grammar_stack.push("boy");
 
         // generate terminals
-        terminalMap.put("+", "+");
-        terminalMap.put("*", "*");
+        terminalMap.put("U", "U");
+        terminalMap.put("E", "E");
         terminalMap.put("(", "(");
         terminalMap.put(")", ")");
 
-        // put all input in stack
-        for(int x=line.length()-1; x > -1; x--){
-            input_stack.push(line.charAt(x));
-        }
+        return line+"$";
     }
 
-    static private int checker(int currstate, char character) {
+    static private ArrayList<String> checker(String currstate, char character) {
         switch (currstate) {
-            case q0: 
+            case "boy": 
                 switch (character) {
-                    case '$': return q1;
-                    case 'F': return q2;
-                    case 'R': return q2;
-                    case 'D': return q7;
-                    default: return garb;
+                    case '(': return LLTable.get("boy").get("(").getValue();
+                    case ')': return LLTable.get("boy").get(")").getValue();
+                    case 'A': return LLTable.get("boy").get("alphanum").getValue();
+                    case 'S': return LLTable.get("boy").get("symbol").getValue();
+                    case 'U': return LLTable.get("boy").get("U").getValue();
+                    case 'E': return LLTable.get("boy").get("E").getValue();
+                    case '$': return LLTable.get("boy").get("$").getValue();
+                    default: return null;
+            }
+            case "car": 
+                switch (character) {
+                    case '(': return LLTable.get("car").get("(").getValue();
+                    case ')': return LLTable.get("car").get(")").getValue();
+                    case 'A': return LLTable.get("car").get("alphanum").getValue();
+                    case 'S': return LLTable.get("car").get("symbol").getValue();
+                    case 'U': return LLTable.get("car").get("U").getValue();
+                    case 'E': return LLTable.get("car").get("E").getValue();
+                    case '$': return LLTable.get("car").get("$").getValue();
+                    default: return null;
+            }
+            case "door": 
+                switch (character) {
+                    case '(': return LLTable.get("door").get("(").getValue();
+                    case ')': return LLTable.get("door").get(")").getValue();
+                    case 'A': return LLTable.get("door").get("alphanum").getValue();
+                    case 'S': return LLTable.get("door").get("symbol").getValue();
+                    case 'U': return LLTable.get("door").get("U").getValue();
+                    case 'E': return LLTable.get("door").get("E").getValue();
+                    case '$': return LLTable.get("door").get("$").getValue();
+                    default: return null;
+            }
+            case "apple": 
+                switch (character) {
+                    case '(': return LLTable.get("apple").get("(").getValue();
+                    case ')': return LLTable.get("apple").get(")").getValue();
+                    case 'A': return LLTable.get("apple").get("alphanum").getValue();
+                    case 'S': return LLTable.get("apple").get("symbol").getValue();
+                    case 'U': return LLTable.get("apple").get("U").getValue();
+                    case 'E': return LLTable.get("apple").get("E").getValue();
+                    case '$': return LLTable.get("apple").get("$").getValue();
+                    default: return null;
+            }
+            case "feather": 
+                switch (character) {
+                    case '(': return LLTable.get("feather").get("(").getValue();
+                    case ')': return LLTable.get("feather").get(")").getValue();
+                    case 'A': return LLTable.get("feather").get("alphanum").getValue();
+                    case 'S': return LLTable.get("feather").get("symbol").getValue();
+                    case 'U': return LLTable.get("feather").get("U").getValue();
+                    case 'E': return LLTable.get("feather").get("E").getValue();
+                    case '$': return LLTable.get("feather").get("$").getValue();
+                    default: return null;
+            }
+            case "good": 
+                switch (character) {
+                    case '(': return LLTable.get("good").get("(").getValue();
+                    case ')': return LLTable.get("good").get(")").getValue();
+                    case 'A': return LLTable.get("good").get("alphanum").getValue();
+                    case 'S': return LLTable.get("good").get("symbol").getValue();
+                    case 'U': return LLTable.get("good").get("U").getValue();
+                    case 'E': return LLTable.get("good").get("E").getValue();
+                    case '$': return LLTable.get("good").get("$").getValue();
+                    default: return null;
             }
             default: 
-                return garb;
+                return null;
         }
     }
     // ASCII (a-z = 97-122) (0-9 = 48-57)
-    public static boolean DoLLOneParsing(){
-        int state = q0;
+    public static boolean DoLLOneParsing(String line){
         isAlphaNum = false;
+        int cnt=0;
+        boolean invalid = false;
 
-        while(!input_stack.isEmpty() && (state != garb)){
-            // id = integers
-            if(grammar_stack.peek().equals("id")){
-                if(input_stack.peek() > 47 && input_stack.peek() < 58){
-                    input_stack.pop();
+        while(line.charAt(cnt) != '$' && !invalid && !grammar_stack.peek().equals("$")){
+            if(grammar_stack.peek().equals("alphanum")){
+                // System.out.println("PASOK ALPHANUM");
+                if((line.charAt(cnt) > 47 && line.charAt(cnt) < 58) || (line.charAt(cnt) > 96 && line.charAt(cnt) < 123)){
+                    cnt++;
                     isAlphaNum = true;
-                    // state = checker(state, grammar_stack.peek().charAt(0));
                 }
                 else if(isAlphaNum){
                     grammar_stack.pop();
                     isAlphaNum = false;
                 }
                 else
-                    state = garb;
+                    invalid = true;
             }
-            else if(terminalMap.containsKey(grammar_stack.peek())){
-                state = checker(state, grammar_stack.peek().charAt(0));
-                grammar_stack.pop();
-                input_stack.pop();
+            else if(grammar_stack.peek().equals("symbol")){
+                // System.out.println("PASOK SYMBOL");
+                if(line.charAt(cnt) == '?' || line.charAt(cnt) == '+' || line.charAt(cnt) == '*'){
+                    cnt++;
+                    grammar_stack.pop();
+                }
+                else
+                    invalid = true;
             }
             else if(grammar_stack.peek().equals("epsilon")){
+                // System.out.println("PASOK EPSILON");
                 grammar_stack.pop();
             }
             else if(grammar_stack.peek().equals("empty")){
-                state = checker(state, grammar_stack.peek().charAt(0));
+                // System.out.println("PASOK EMPTY");
+                invalid = true;
             }
             else if(Character.isLowerCase(grammar_stack.peek().charAt(0))){
+                // System.out.println("PASOK LOWER");
                 String currtop = grammar_stack.peek();
                 grammar_stack.pop();
 
                 ArrayList<String> values = new ArrayList<String>();
 
-                if(input_stack.peek() > 47 && input_stack.peek() < 58)
-                    values = LLTable.get(currtop).get("id").getValue();
-                else
-                    values = LLTable.get(currtop).get(input_stack.peek().toString()).getValue();
-
-                for(int x=values.size()-1; x>-1; x--){
-                    grammar_stack.push(values.get(x));
+                if((line.charAt(cnt) > 47 && line.charAt(cnt) < 58) || (line.charAt(cnt) > 96 && line.charAt(cnt) < 123))
+                    values = checker(currtop, 'A');
+                else if(line.charAt(cnt) == '?' || line.charAt(cnt) == '+' || line.charAt(cnt) == '*'){
+                    values = checker(currtop, 'S');
                 }
+                else
+                    values = checker(currtop, line.charAt(cnt));
+
+                if(values != null){
+                    for(int x=values.size()-1; x>-1; x--){
+                        grammar_stack.push(values.get(x));
+                    }
+                }
+                else
+                    invalid = true;
+            }
+            else{
+                // System.out.println("PASOK TERMINAL");
+                if(terminalMap.containsKey(line.charAt(cnt)+"")){
+                    if(terminalMap.get(line.charAt(cnt)+"").equals(grammar_stack.peek())){
+                        cnt++;
+                        grammar_stack.pop();
+                    }
+                    else
+                        invalid = true;
+                }
+                else
+                    invalid = true;
             }
         }
 
-        return true;
+        if(isAlphaNum){
+            grammar_stack.pop();
+        }
+
+        if(invalid){
+            return false;
+        }
+        else{
+            if(line.charAt(cnt) == '$'){
+                if(grammar_stack.peek().equals("$"))
+                    return true;
+                else{
+                    while(!grammar_stack.peek().equals("$")){
+                        if(LLTable.containsKey(grammar_stack.peek())){
+                            if(LLTable.get(grammar_stack.peek()).get("$").getValue().get(0).equals("epsilon")){
+                                grammar_stack.pop();
+                            }
+                            else
+                                return false;
+                        }
+                        else
+                            return false;
+                    }
+
+                    return true;
+                }
+            } 
+            else
+                return false;
+        }
     }
 
     public static void main(String[] args) throws Exception {
@@ -119,38 +217,42 @@ public class Main {
         GenerateLLTable gentable = new GenerateLLTable();
         LLTable = gentable.generateTable();
 
-        // while( (line = br.readLine()) != null){
-        //     if(!line.equals("")){
-        //         fw.append(line + " - ");
-        //         line = line.replace(" ", "");
+        while( (line = br.readLine()) != null){
+            if(!line.equals("")){
+                fw.append(line + " - ");
+                line = line.replace(" ", "");
 
-        //         startup(line);
-        //         if(DoLLOneParsing()){
-        //             fw.append("ACCEPT");
-        //         }
-        //         else{
-        //             fw.append("REJECT");
-        //         }
-                
-        //         fw.append("\n");
-        //     }
-        // }
-
-        LLTable.entrySet().forEach(nonTerminal->{
-            System.out.println("NonTerminal = " + nonTerminal.getKey().toString());
-            
-            nonTerminal.getValue().entrySet().forEach(terminal->{
-                System.out.print("Ternimal = " + terminal.getKey().toString() + " === ");
-
-                for(int x=0; x<terminal.getValue().getValue().size(); x++){
-                    System.out.print(terminal.getValue().getValue().get(x) + "  ");
+                String newline = startup(line);
+                // System.out.println("NEWLINE === " + newline);
+                if(newline.equals("E$")){
+                    fw.append("ACCEPT");
                 }
+                else if(DoLLOneParsing(newline)){
+                    fw.append("ACCEPT");
+                }
+                else{
+                    fw.append("REJECT");
+                }
+                
+                fw.append("\n");
+            }
+        }
 
-                System.out.println("");
-            });
+        // LLTable.entrySet().forEach(nonTerminal->{
+        //     System.out.println("NonTerminal = " + nonTerminal.getKey().toString());
+            
+        //     nonTerminal.getValue().entrySet().forEach(terminal->{
+        //         System.out.print("Ternimal = " + terminal.getKey().toString() + " === ");
 
-            System.out.println("");
-        });
+        //         for(int x=0; x<terminal.getValue().getValue().size(); x++){
+        //             System.out.print(terminal.getValue().getValue().get(x) + "  ");
+        //         }
+
+        //         System.out.println("");
+        //     });
+
+        //     System.out.println("");
+        // });
 
         System.out.println("Parsing Complete!");
 
