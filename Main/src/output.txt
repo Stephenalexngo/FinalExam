@@ -13,5 +13,5 @@ a+ U b* U c? U E - ACCEPT
 1234E - REJECT
 1234? - ACCEPT
 1a* U 2*b U 3+c+ U 4+d? - ACCEPT
-EU(ab) - ACCEPT
-EUab - ACCEPT
+abUEUd - ACCEPT
+abc U def U (E U - REJECT

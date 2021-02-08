@@ -106,7 +106,9 @@ public class Main {
         boolean invalid = false;
 
         while(line.charAt(cnt) != '$' && !invalid && !grammar_stack.peek().equals("$")){
-            if(grammar_stack.peek().equals("alphanum")){
+            if(line.charAt(cnt) == 'E' && line.charAt(cnt+1) == 'U')
+                cnt+=2;
+            else if(grammar_stack.peek().equals("alphanum")){
                 // System.out.println("PASOK ALPHANUM");
                 if((line.charAt(cnt) > 47 && line.charAt(cnt) < 58) || (line.charAt(cnt) > 96 && line.charAt(cnt) < 123)){
                     cnt++;
