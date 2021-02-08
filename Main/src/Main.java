@@ -224,8 +224,17 @@ public class Main {
 
                 String newline = startup(line);
                 // System.out.println("NEWLINE === " + newline);
-                if(newline.equals("E$")){
-                    fw.append("ACCEPT");
+                if(newline.charAt(0) == 'E'){
+                    if(newline.charAt(1) == '$')
+                        fw.append("ACCEPT");
+                    else if(newline.charAt(1) == 'U'){
+                        if(DoLLOneParsing(newline.substring(2, newline.length())))
+                            fw.append("ACCEPT");
+                        else
+                            fw.append("REJECT");
+                    }
+                    else
+                        fw.append("REJECT");
                 }
                 else if(DoLLOneParsing(newline)){
                     fw.append("ACCEPT");
