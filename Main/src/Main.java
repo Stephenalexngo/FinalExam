@@ -230,7 +230,9 @@ public class Main {
                     if(newline.charAt(1) == '$')
                         fw.append("ACCEPT");
                     else if(newline.charAt(1) == 'U'){
-                        if(DoLLOneParsing(newline.substring(2, newline.length())))
+                        if(newline.charAt(2) == 'E')
+                            fw.append("ACCEPT");
+                        else if(DoLLOneParsing(newline.substring(2, newline.length())))
                             fw.append("ACCEPT");
                         else
                             fw.append("REJECT");

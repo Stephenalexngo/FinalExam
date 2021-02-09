@@ -5,9 +5,9 @@ public class GenerateLLTable {
     String[] nonTerminals = {"boy","car","door","apple","feather","good"};
     String[] terminals = {"(",")","alphanum","symbol","U","E","$"};
 
-    String[] boy_table = {"( boy ) door", "empty", "car", "empty", "empty", "empty", "empty"};
+    String[] boy_table = {"( feather ) door", "empty", "car", "empty", "empty", "empty", "empty"};
     String[] car_table = {"empty", "empty", "alphanum door", "empty", "empty", "empty", "empty"};
-    String[] door_table = {"empty", "epsilon", "empty", "symbol good", "apple", "empty", "epsilon"};
+    String[] door_table = {"boy", "epsilon", "boy", "symbol good", "apple", "empty", "epsilon"};
     String[] apple_table = {"empty", "empty", "empty", "empty", "U feather", "empty", "empty"};
     String[] feather_table = {"boy", "empty", "boy", "empty", "empty", "E", "empty"};
     String[] good_table = {"boy", "epsilon", "boy", "empty", "apple", "empty", "epsilon"};
